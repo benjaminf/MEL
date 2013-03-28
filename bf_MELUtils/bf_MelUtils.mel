@@ -1,10 +1,11 @@
 /*************************************************************
 --------------------------------------------------------------
 bf :: MELUtils Prototypes
--------------------------
+MELUtils is a set of proc made to help MELScripters.
+----------------------------------------------------
 
-	FLAGS Utils
-	------------------------------
+	FLAGS Utils - Helps working with FLAGS.
+	----------------------------------------
 		int bf_areFlagsValid(string $FLAGS, int $FCount);
 		//		--> Returns 1:Success/ 0:Error
 		//		--> $FLAGS = a string of flags, separated by |. AKA: "Flag1|Flag2|FLag3|..."
