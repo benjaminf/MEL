@@ -11,24 +11,14 @@ bf :: MELUtils Prototypes
 		//		--> $FCount = number of recquired FLAGS.
 		
 		
-		int[] bf_parseFlags(string $FLAGS);
+		int[] bf_parseBooleanFlags(string $FLAGS);
 		//		--> Returns array of (int) FLAGS.
-		//		--> size($FLAGS) > 0 == Success else Error				
+		//		--> (`size($FLAGS)` == 0) => Error else ( Success )				
 		
 		
-		int bf_areFlagsBFF (int $FLAGS[]);
+		int bf_areFlagsBoolean (int $FLAGS[]);
 		//		--> Returns 1:Success / 0:Error
-		//		--> Checks if FLAGS are bf :: flags -> bits flags(1,0)
-
-
-
-
-
-
-
-
-
-
+		//		--> Checks if FLAGS are ~booleans (1|0)
 
 
 
@@ -52,7 +42,7 @@ proc int bf_areFlagsValid(string $FLAGS, int $FCount)
 	return false;
 }
 
-proc int[] bf_parseFlags(string $FLAGS)
+proc int[] bf_parseBooleanFlags(string $FLAGS)
 {
 	int $fl[];
 	string $oFLAGS[];
@@ -67,7 +57,7 @@ proc int[] bf_parseFlags(string $FLAGS)
 	return $fl;
 }
 
-proc int bf_areFlagsBFF (int $FLAGS[])
+proc int bf_areFlagsBoolean (int $FLAGS[])
 {
 	int $fSize=size($FLAGS);
 	if ($fSize==0)
@@ -76,7 +66,7 @@ proc int bf_areFlagsBFF (int $FLAGS[])
 	}
 	
 	int $i;
-	int $good=true;
+	int $good=false;
 	for ($i=0; $i<$fSize; $i++)
 	{
 		if ($FLAGS[$i]>=0 && $FLAGS[$i] <=1)
