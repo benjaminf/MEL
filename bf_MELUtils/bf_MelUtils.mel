@@ -1,0 +1,95 @@
+/*************************************************************
+--------------------------------------------------------------
+bf :: MELUtils Prototypes
+-------------------------
+
+	FLAGS Utils
+	------------------------------
+		int bf_areFlagsValid(string $FLAGS, int $FCount);
+		//		--> Returns 1:Success/ 0:Error
+		//		--> $FLAGS = a string of flags, separated by |. AKA: "Flag1|Flag2|FLag3|..."
+		//		--> $FCount = number of recquired FLAGS.
+		
+		
+		int[] bf_parseFlags(string $FLAGS);
+		//		--> Returns array of (int) FLAGS.
+		//		--> size($FLAGS) > 0 == Success else Error				
+		
+		
+		int bf_areFlagsBFF (int $FLAGS[]);
+		//		--> Returns 1:Success / 0:Error
+		//		--> Checks if FLAGS are bf :: flags -> bits flags(1,0)
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*************************************************************
+--------------------------------------------------------------
+bf :: MELUtils Implementations */
+
+
+/* <FLAGS>
+-----------------*/
+proc int bf_areFlagsValid(string $FLAGS, int $FCount)
+{
+	int $valid=0;
+	string $oFLAGS[];
+	$oFLAGS = stringToStringArray($FLAGS, "|");
+	
+	if (size($oFLAGS)==$FCount)
+	{
+		return true;
+	}
+	return false;
+}
+
+proc int[] bf_parseFlags(string $FLAGS)
+{
+	int $fl[];
+	string $oFLAGS[];
+	$oFLAGS = stringToStringArray($FLAGS, "|");
+	int $i;
+	int $s=size($oFLAGS);
+	
+	for ($i=0; $i<$s; $i++)
+	{
+		$fl[$i]=(int) $oFLAGS[$i];
+	}
+	return $fl;
+}
+
+proc int bf_areFlagsBFF (int $FLAGS[])
+{
+	int $fSize=size($FLAGS);
+	if ($fSize==0)
+	{
+		return false;
+	}
+	
+	int $i;
+	int $good=true;
+	for ($i=0; $i<$fSize; $i++)
+	{
+		if ($FLAGS[$i]>=0 && $FLAGS[$i] <=1)
+		{
+			$good=true;
+		}
+		else
+		{
+			$good=false;
+			return $good;
+		}
+	}
+	return $good;
+}
+/* </FLAGS>
+-----------------*/
