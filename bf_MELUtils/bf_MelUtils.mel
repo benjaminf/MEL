@@ -8,7 +8,7 @@ bf :: MELUtils Prototypes
 		int bf_areFlagsValid(string $FLAGS, int $FCount);
 		//		--> Returns 1:Success/ 0:Error
 		//		--> $FLAGS = a string of flags, separated by |. AKA: "Flag1|Flag2|FLag3|..."
-		//		--> $FCount = number of recquired FLAGS.
+		//		--> $FCount = number of mandatory FLAGS.
 		
 		
 		int[] bf_parseBooleanFlags(string $FLAGS);
