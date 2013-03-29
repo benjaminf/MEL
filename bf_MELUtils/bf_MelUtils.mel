@@ -111,4 +111,8 @@ proc int bf_parseBoolFlagsFromString (string $FLAGS, int $PARSED_BOOL_FLAGS[])
 	clear($PARSED_BOOL_FLAGS);
 	return 0;
 }
+<<<<<<< HEAD
 //----------------------------------------------------
+=======
+//----------------------------------------------------
+>>>>>>> README.md written
