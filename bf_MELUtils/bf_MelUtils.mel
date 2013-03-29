@@ -4,83 +4,111 @@ bf :: MELUtils Prototypes
 MELUtils is a set of proc made to help MELScripters.
 ----------------------------------------------------
 
-	FLAGS Utils - Helps working with FLAGS.
-	----------------------------------------
-		int bf_areFlagsValid(string $FLAGS, int $FCount);
-		//		--> Returns 1:Success/ 0:Error
-		//		--> $FLAGS = a string of flags, separated by |. AKA: "Flag1|Flag2|FLag3|..."
-		//		--> $FCount = number of mandatory FLAGS.
-		
-		
-		int[] bf_parseBooleanFlags(string $FLAGS);
-		//		--> Returns array of (int) FLAGS.
-		//		--> (`size($FLAGS)` == 0) => Error else ( Success )				
-		
-		
-		int bf_areFlagsBoolean (int $FLAGS[]);
-		//		--> Returns 1:Success / 0:Error
-		//		--> Checks if FLAGS are ~booleans (1|0)
+//---------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------
+		int bf_parseBoolFlagsFromString (string $FLAGS, int $PARSED_BOOL_FLAGS[]);			
+			
+			/-/	Arguments:
+				//	string $FLAGS[] : a string of boolean flags. AKA : string $flags="1|0|1|0|...".
+				//  int $PARSED_BOOL_FLAGS[] : an array which will hold the boolean flags.
+			
+			/-/	Return:
+				//	1 : Success + $PARSED_BOOL_FLAGS[] filed with the flags in order.
+				//	0 : Error + 'emptied'($PARSED_BOOL_FLAGS[]).
+			
+			/-/	Usage:		
+				//	int $FLAGS[];
+				//	string $strFlAGS="1|0|1";
+				
+				//	if (bf_parseBoolFlagsFromString($strFlAGS,$FLAGS))
+				//	{	
+				//		yourProc($FLAGS);
+				//	}
+				
+//---------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------
 
 
 
-/*************************************************************
---------------------------------------------------------------
-bf :: MELUtils Implementations */
 
 
-/* <FLAGS>
------------------*/
-proc int bf_areFlagsValid(string $FLAGS, int $FCount)
+
+
+
+
+
+
+
+
+						bf :: MELUtils Implementations */
+//---------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------
+proc int bf_parseBoolFlagsFromString (string $FLAGS, int $PARSED_BOOL_FLAGS[])
 {
-	int $valid=0;
-	string $oFLAGS[];
-	$oFLAGS = stringToStringArray($FLAGS, "|");
 	
-	if (size($oFLAGS)==$FCount)
-	{
-		return true;
-	}
-	return false;
-}
-
-proc int[] bf_parseBooleanFlags(string $FLAGS)
-{
-	int $fl[];
-	string $oFLAGS[];
-	$oFLAGS = stringToStringArray($FLAGS, "|");
-	int $i;
-	int $s=size($oFLAGS);
-	
-	for ($i=0; $i<$s; $i++)
-	{
-		$fl[$i]=(int) $oFLAGS[$i];
-	}
-	return $fl;
-}
-
-proc int bf_areFlagsBoolean (int $FLAGS[])
-{
-	int $fSize=size($FLAGS);
+	// Pre checks
+	//-------------------------------------------------
+	int $fSize=sizeBytes($FLAGS);
 	if ($fSize==0)
 	{
-		return false;
+		return 0; // FLAGS array is empty, returns error;
+	}
+	int $pfSize=size($PARSED_BOOL_FLAGS);
+	if ($pfSize>0)
+	{
+		return 0; // ParsedFLAGS array is not empty, returns error for safety, ( arrays are passed by ref in MEL );
 	}
 	
-	int $i;
-	int $good=false;
-	for ($i=0; $i<$fSize; $i++)
+
+	// Cut string
+	//-------------------------------------------------	
+	string $pFLAGS[];
+	$pFLAGS = stringToStringArray($FLAGS, "|"); // Cut $FLAGS into a string array;
+	if (size($pFLAGS)==0)
 	{
-		if ($FLAGS[$i]>=0 && $FLAGS[$i] <=1)
+		return 0; // Returns error if size(array of flags)==0;
+	}
+	
+	// Parse strings - Store FLAGS
+	//-------------------------------------------------
+	int $i;
+	int $pFSize=size($pFLAGS);
+	int $good=0;
+	int $tempFlags[];
+	
+	for ($i=0; $i<$pFSize; $i++)
+	{
+		$tempFlags[$i]=(int) $pFLAGS[$i];
+		if ($tempFlags[$i]>=0 && $tempFlags[$i] <=1)
 		{
-			$good=true;
+			$PARSED_BOOL_FLAGS[$i]=$tempFlags[$i];
+			$good=1;
 		}
 		else
 		{
-			$good=false;
-			return $good;
+			$good=0;
 		}
 	}
-	return $good;
+	
+	// Check parsing
+	//-------------------------------------------------
+	if ($good=1)
+	{
+		int $s=size($PARSED_BOOL_FLAGS);
+		if ($s==$pFSize)
+		{
+			return 1; // Success
+		}
+	}
+	else
+	{
+		clear($PARSED_BOOL_FLAGS); // There was an Error during parsing, clean and return.
+		return 0;
+	}
+	
+	
+	// The script can not go there. I left this part for safety.	
+	clear($PARSED_BOOL_FLAGS);
+	return 0;
 }
-/* </FLAGS>
------------------*/
+//----------------------------------------------------
